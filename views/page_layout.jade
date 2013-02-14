@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .navbar
+    .navbar-inner
+      a.brand(href="/") #{config.app_name}
+      ul.nav
+        for _page in menus
+          if _page.id == page.id
+            li.active
+              a(href="/pages/" + _page.id) #{_page.title}
+          else
+            li
+              a(href="/pages/" + _page.id) #{_page.title}
+      ul.nav.pull-right
+        li.dropdown
+          a.dropdown-toggle(href='#',data-toggle='dropdown')
+            | #{user.username}
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href="http://luin.github.com/ranaly", target="_blank") Help
+            li.divider
+            li
+              a(href="/logout") Logout
+  block page_content

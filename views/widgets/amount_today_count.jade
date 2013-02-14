@@ -1,0 +1,97 @@
+mixin amount_today_count(widget)
+  style
+  div.clearfix(id='container' + widget.id)
+  script
+    $(function () {
+      var widget = !{JSON.stringify(widget)};
+      var id = widget.id;
+
+      var tpl = ' \
+        {{#data}} \
+        <table class="amount-today-count"> \
+          <tr> \
+            <td class="amount-today-count-left"> \
+              TODAY\'S<br /><b>{{bucket}}</b> \
+            </td> \
+            <td class="amount-today-count-right" style="color: {{color}}"> \
+              {{today}} \
+            </td> \
+          </tr> \
+          <tr class="va-top"> \
+            <td class="amount-today-count-left"> \
+              ESTIMATE \
+            </td> \
+            <td class="amount-today-count-right small" style="color: {{color}}"> \
+              {{estimate}} \
+            </td> \
+          </tr> \
+          <tr class="va-top"> \
+            <td class="amount-today-count-left"> \
+              VS yesterday \
+            </td> \
+            <td class="amount-today-count-right small" style="color: {{color}}"> \
+              <span class="{{class}}">{{trend}}%</span> \
+            </td> \
+          </tr> \
+        </table> \
+        {{/data}} \
+      ';
+      var execute = function () {
+        var today = moment();
+        var todayHour = today.hours();
+        var todayYYYYMMDD = today.format('YYYYMMDD');
+        var yesterday = moment(Date.now() - 24 * 3600 * 1000);
+        var yesterdayYYYYMMDD = yesterday.format('YYYYMMDD');
+        var todayHours = [];
+        var yesterdayHours = [];
+        for (var i = 0; i < todayHour; ++i) {
+          var d = (i < 10) ? '0' + i : i.toString();
+          todayHours.push(todayYYYYMMDD + d);
+        }
+        for (var i = 0; i < 24; ++i) {
+          var d = (i < 10) ? '0' + i : i.toString();
+          yesterdayHours.push(yesterdayYYYYMMDD + d);
+        }
+
+        ranalyApi.amount.get(widget.bucket, [todayYYYYMMDD].concat(todayHours).concat(yesterdayHours), function (data) {
+          data = data.items;
+          var locals = {data: []};
+          var i = 0, j = 0;
+          _.forEach(data, function (d) {
+            var iLocals = {};
+            iLocals.color = CHART_COLORS[i % CHART_COLORS.length];
+            iLocals.bucket = widget.bucket[i++];
+            iLocals.today = d[0];
+            var todayTrend = 0;
+            for (j = 0; j < todayHour; ++j) {
+              todayTrend += d[1 + j];
+            }
+            var yesterdayTrend = 0;
+            for (j = 0; j < todayHour; ++j) {
+              yesterdayTrend += d[1 + todayHour + j];
+            }
+            if (yesterdayTrend) {
+              iLocals.trend = ((todayTrend - yesterdayTrend) * 100 / yesterdayTrend).toFixed(2);
+            } else {
+              iLocals.trend = 0;
+            }
+            iLocals.class = (iLocals.trend >= 0) ? 'trend-up' : 'trend-down';
+            var yesterdayTotal = yesterdayTrend;
+            for (j = todayHour; j < 24; ++j) {
+              yesterdayTotal += d[1 + todayHour + j];
+            }
+            if (yesterdayTrend) {
+              iLocals.estimate = parseInt(todayTrend / yesterdayTrend * yesterdayTotal, 10);
+            } else {
+              iLocals.estimate = yesterdayTotal;
+            }
+            locals.data.push(iLocals);
+          });
+          $('#container' + id).html(Mustache.render(tpl, locals));
+        });
+      };
+      execute();
+      renderInterval(widget.update_interval, function () {
+        execute();
+      });
+    });

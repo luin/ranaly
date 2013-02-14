@@ -1,0 +1,167 @@
+body {
+  padding: 20px;
+  background: #FBFBFB url(../images/bg.jpg) repeat;
+}
+
+.wrap {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 960px;
+}
+
+.navbar {
+}
+
+.col {
+  position: relative;
+  margin: 0 auto 20px;
+  background: #fff url(../images/col.gif) top repeat-x;
+  padding: 0 20px 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.col h2 {
+  margin: 0 0 20px;
+  font-size: 18px;
+  color: #555;
+  line-height: 53px;
+}
+
+.col .modal {
+  width: 400px;
+  /* must be half of the width, minus scrollbar on the left (30px) */
+  margin: 0 -170px 0 -200px;
+}
+
+.login {
+  position: absolute;
+  top: 50%;
+  margin-top: -115px;
+  left: 0;
+  width: 100%;
+}
+
+.login .col {
+  margin-left: auto;
+  margin-right: auto;
+  width: 350px;
+}
+.login .form-horizontal .control-label {
+  width: 80px;
+}
+
+.login .form-horizontal .controls {
+  margin-left: 100px;
+}
+
+.footer {
+  margin-top: 50px;
+  text-align: center;
+  color: #757575;
+  font-size: 10px;
+}
+
+.side {
+  font-size: 11px;
+}
+
+h2 .btn-group .btn {
+  font-size: 12px;
+}
+
+h2 .btn-group .btn b {
+  margin-left: 5px;
+}
+
+.amount-pie-chart-total {
+  position: absolute;
+  z-index: 9;
+  bottom: 10px;
+  right: 20px;
+  color: #999;
+}
+.amount-today-count {
+  margin: 30px auto 50px;
+  width: 315px;
+  height: 110px;
+  float: left;
+  text-transform: uppercase;
+}
+.amount-today-count-left {
+  padding-right: 5px;
+  width: 122px;
+  font-size: 12px;
+  line-height: 15px;
+  color: #666;
+  text-align: right;
+  vertical-align: bottom;
+}
+.amount-today-count-right {
+  position: relative;
+  top: 4px;
+  width: 198px;
+  font-size: 60px;
+  line-height: 60px;
+  color: #6ea8cd;
+  vertical-align: bottom;
+}
+
+.va-top .amount-today-count-left, .va-top .amount-today-count-right {
+  top: 0;
+  padding-top: 5px;
+  vertical-align: top;
+}
+
+.va-top .amount-today-count-right {
+  left: 2px;
+}
+
+.amount-today-count-left b {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.split-border {
+  border-top: 1px solid #CCC;
+}
+
+.small {
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.trend-up {
+  color: #57a532;
+  padding-right: 20px;
+  background: transparent url(../images/trend-up.gif) right top no-repeat;
+}
+
+.trend-down {
+  color: #c53c2a;
+  padding-right: 20px;
+  background: transparent url(../images/trend-down.gif) right top no-repeat;
+}
+
+ul.amount-total-count {
+  margin-left: 0;
+}
+.amount-total-count li {
+  float: left;
+  list-style: none;
+  width: 306px;
+}
+
+.amount-total-count li p {
+  text-align: center;
+}
+
+.amount-total-count-number {
+  font-size: 60px;
+  line-height: 60px;
+  margin: 10px 0 0;
+}
+
+.amount-total-count-bucket {
+  color: #666;
+  text-transform: uppercase;
+}

@@ -1,0 +1,37 @@
+mixin datalist_list(widget)
+  .col
+    h2 #{widget.title}
+    .clearfix(id="container" + widget.id)
+      .content
+      .pagination(style="margin-bottom: -10px; float: right")
+    script
+      var datalist_list_load_data#{widget.id} = function (page) {
+        var widget = !{JSON.stringify(widget)};
+        var tpl = ' \
+          <ul> \
+            {{#li}} \
+            <li{{class}}> \
+              <a href="javascript:void 0" onclick="datalist_list_load_data#{widget.id}({{page}});">{{page}}</a> \
+            </li> \
+            {{/li}} \
+          </ul> \
+        ';
+        var from = (page - 1) * #{widget.count_per_page};
+        var to = from + #{widget.count_per_page} - 1;
+        ranalyApi.datalist.get('#{widget.bucket[0]}', from, to, function (result) {
+          var length = Math.ceil(result.length / #{widget.count_per_page});
+          var locals = {li: []};
+          for (var i = 1; i <= length; ++i) {
+            locals.li.push({
+              class: (i === page) ? ' class=active' : '',
+              page: i
+            });
+          }
+          $('#container#{widget.id} .pagination').html(Mustache.render(tpl, locals));
+          $('#container#{widget.id} .content').html(Mustache.render(widget.template, result));
+        });
+
+      }
+      $(function () {
+        datalist_list_load_data#{widget.id}(1);
+      });

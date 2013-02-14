@@ -1,0 +1,20 @@
+extends layout
+block content
+
+  .login
+    .col
+      h2 Login
+      if message
+        !{message}
+      form.form-horizontal(method="post")
+        div.control-group
+          label.control-label(for='username') Username
+          div.controls
+            input#username(name="username", type='text',placeholder='Username')
+        div.control-group
+          label.control-label(for='password') Password
+          div.controls
+            input#password(name="password", type='password',placeholder='Password')
+        div.control-group
+          div.controls
+            button.btn(type='submit') Sign in

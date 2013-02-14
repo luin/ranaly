@@ -1,0 +1,33 @@
+extends page_layout
+include widgets/amount_line_chart
+include widgets/amount_pie_chart
+include widgets/amount_today_count
+include widgets/amount_total_count
+include widgets/realtime_line_chart
+include widgets/realtime_count
+include widgets/datalist_list
+include widgets/custom_code
+
+block page_content
+  for widget in page.widgets
+    if widget.role <= user.role
+      if widget.type == "amount_line_chart"
+        +amount_line_chart(widget)
+      else if widget.type == "amount_pie_chart"
+        +amount_pie_chart(widget)
+      else if widget.type == "amount_today_count"
+        +amount_today_count(widget)
+      else if widget.type == "amount_total_count"
+        +amount_total_count(widget)
+      else if widget.type == "realtime_line_chart"
+        +realtime_line_chart(widget)
+      else if widget.type == "realtime_count"
+        +realtime_count(widget)
+      else if widget.type == "datalist_list"
+        +datalist_list(widget)
+      else if widget.type == "custom_code"
+        +custom_code(widget)
+  else
+    p No widgets.
+  .footer
+    p Powered by Ranaly.

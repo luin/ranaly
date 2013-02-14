@@ -1,0 +1,188 @@
+mixin amount_pie_chart(widget)
+  .col
+    .amount-pie-chart-total(id="total" + widget.id)
+    h2 #{widget.title}
+      .pull-right
+        .btn-group
+          button.btn.btn-small(id='bt' + widget.id)
+          button.btn.btn-small.dropdown-toggle(data-toggle='dropdown')
+            span.caret
+          ul.dropdown-menu(id='dropdown' + widget.id)
+            li(data-range='today')
+              a(href='javascript:void 0') Today
+            li(data-range='yesterday')
+              a(href='javascript:void 0') Yesterday
+            li.divider
+            li(data-range='7days')
+              a(href='javascript:void 0') Last 7 days
+            li(data-range='30days')
+              a(href='javascript:void 0') Last 30 days
+            li.divider
+            li(data-range='all')
+              a(href='javascript:void 0') All
+            li.divider
+            li(data-range='custom')
+              a(href='javascript:void 0', data-toggle='modal', data-target='#modal' + widget.id) Custom...
+    div(id='container' + widget.id)
+    .modal.hide.fade(id='modal' + widget.id)
+      .modal-header
+        button.close(type='button',data-dismiss='modal',aria-hidden='true') ×
+        h3 Custom date range
+      .modal-body
+        .div(id='date' + widget.id)
+      .modal-footer
+        button.btn(data-dismiss='modal',aria-hidden='true') Cancel
+        button.btn.btn-primary(id='okBtn' + widget.id) OK
+    script
+      $(function () {
+        var widget = !{JSON.stringify(widget)};
+        var id = widget.id;
+        var silent = false;
+        var option = {
+          chart: {
+            renderTo: 'container' + id
+          },
+          title: {
+            text: '#{widget.title}'
+          },
+          subtitle: {
+            text: '#{widget.subtitle}'
+          },
+          tooltip: {
+            formatter: function() {
+              return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2) +' %';
+             }
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: true,
+                color: '#000000',
+                connectorColor: '#000000',
+                formatter: function() {
+                  return '<b>'+ this.point.name +'</b>: '+ this.y;
+                }
+              }
+            }
+          },
+          series: [{
+            type: 'pie',
+            data: []
+          }]
+        };
+
+        var chart = new Highcharts.Chart(option);
+        var kal = new Kalendae('date' + id, {
+          mode: 'range',
+          months: 2
+        });
+
+        var loadData = function (from, to) {
+          var timeList = [];
+          if (!silent)
+            chart.showLoading();
+          if (from) {
+            // Update the kal
+            var mfrom = moment(from).format('M/D/YYYY');
+            if (to) {
+              var mto = moment(to).format('M/D/YYYY');
+              kal.setSelected(mfrom + ' - ' + mto);
+            } else {
+              kal.setSelected(mfrom);
+            }
+
+            if (!to) {
+              from = startOfDay(from);
+            }
+            if (!to) {
+              for (var i = 0; i < 24; ++i) {
+                timeList.push(new Date(from.getTime() + i * 3600 * 1000));
+              }
+            } else {
+              to = to.getTime();
+              while(from.getTime() <= to) {
+                timeList.push(from);
+                from = new Date(from.getTime() + 24 * 3600 * 1000);
+              }
+            }
+          }
+          var timeToString = function (time) {
+            if (to)
+              return moment(time).format('YYYYMMDD');
+            else
+              return moment(time).format('YYYYMMDDHH');
+          }
+          ranalyApi.amount.sum(widget.bucket, _.map(timeList, timeToString), function (data) {
+            data = data.items;
+            var i = 0;
+            var total = 0;
+            data = data.map(function (d) {
+              total += d;
+              return [widget.bucket[i++], d]
+            });
+            if (!total) {
+              data = [['No data', 1]];
+            }
+            $('#total' + id).html('Total: ' + total);
+            chart.series[0].setData(data);
+            chart.hideLoading();
+            silent = false;
+          });
+        };
+
+        $('#dropdown' + id).delegate('li', 'click', function () {
+          var range = $(this).attr('data-range');
+          if (range === 'custom') return;
+          var now = new Date();
+          var yesterday = new Date(now.getTime() - 24 * 3600 * 1000);
+          $('#bt' + id).attr('data-range', range);
+          $('#bt' + id).html($(this).find('a').html());
+          switch(range) {
+          case 'today':
+            loadData(startOfDay(now));
+            break;
+          case 'yesterday':
+            loadData(startOfDay(yesterday));
+            break;
+          case '30days':
+            loadData(new Date(Date.now() - 30 * 24 * 3600 * 1000), new Date());
+            break;
+          case '7days':
+            loadData(new Date(Date.now() - 7 * 24 * 3600 * 1000), new Date());
+            break;
+          case 'all':
+            loadData();
+            break;
+          }
+        });
+
+        $('#bt' + id).click(function () {
+          var dataRange = $(this).attr('data-range');
+          if (dataRange === 'custom') {
+            $('#okBtn' + id).click();
+          } else {
+            $('#dropdown' + id + ' [data-range='+dataRange+']').click();
+          }
+        });
+
+        $('#okBtn' + id).click(function () {
+          $('#modal' + id).modal('hide');
+          var res = kal.getSelectedAsDates();
+          if (!res[1] || res[0].getTime() === res[1].getTime()) {
+            loadData(res[0]);
+          } else {
+            loadData(res[0], res[1]);
+          }
+          $('#bt' + id).attr('data-range', 'custom');
+          $('#bt' + id).html(kal.getSelected());
+        });
+
+        $('#dropdown' + id + ' [data-range=' + widget.default_range + ']').click();
+
+        renderInterval(widget.update_interval, function () {
+          silent = true;
+          $('#bt' + id).click();
+        });
+      });

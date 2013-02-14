@@ -1,0 +1,48 @@
+mixin realtime_count(widget)
+  .col
+    h2 #{widget.title}
+    div(id="container" + widget.id)
+    script
+      $(function () {
+        var widget = !{JSON.stringify(widget)}
+        var socket = io.connect('http://' + document.location.host);
+        var keyToID = {};
+        var generateID = function (prefix) {
+          prefix = prefix || '';
+          return prefix + (Math.random() * 1000000000 | 0).toString(36);
+        };
+        var tpl = ' \
+          <ul class="amount-total-count clearfix"> \
+          {{#data}} \
+            <li> \
+              <p id="{{id}}" class="amount-total-count-number" style="color: {{color}}">{{count}}</p> \
+              <p class="amount-total-count-bucket">{{bucket}}</p> \
+            </li> \
+          {{/data}} \
+          </ul> \
+        ';
+        socket.on('connect', function () {
+          socket.emit('register realtime bucket', widget.bucket, function (value) {
+            var i = 0;
+            var locals = {data: []};
+            value.forEach(function (v) {
+              var id = generateID('realtimeCount');
+              keyToID[v[0]] = id;
+              locals.data.push({
+                count: v[1],
+                color: CHART_COLORS[i % CHART_COLORS.length],
+                bucket: widget.bucket[i],
+                id: id
+              });
+              i += 1;
+            });
+            $('#container' + widget.id).html(Mustache.render(tpl, locals));
+          });
+        });
+        socket.on('realtime value', function (data) {
+          var id = keyToID[data.bucketKey];
+          if (typeof id === 'string') {
+            document.getElementById(id).innerHTML = data.value;
+          }
+        });
+      });

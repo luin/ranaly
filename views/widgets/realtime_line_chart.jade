@@ -1,0 +1,91 @@
+mixin realtime_line_chart(widget)
+  .col
+    h2 #{widget.title}
+    div(id="container" + widget.id)
+    script
+      $(function () {
+        var widget = !{JSON.stringify(widget)}
+        var socket = io.connect('http://' + document.location.host);
+        var bucketValue = {};
+        var bucketToKey = {};
+        socket.on('connect', function () {
+          socket.emit('register realtime bucket', widget.bucket, function (value) {
+            var i = 0;
+            value.forEach(function (v) {
+              bucketValue[v[0]] = v[1];
+              bucketToKey[widget.bucket[i]] = v[0];
+              i += 1;
+            });
+          });
+        });
+        socket.on('realtime value', function (data) {
+          if (typeof bucketValue[data.bucketKey] === 'number') {
+            bucketValue[data.bucketKey] = data.value;
+          }
+        });
+
+        var chart;
+        chart = new Highcharts.Chart({
+          chart: {
+            renderTo: 'container' + widget.id,
+            type: 'spline',
+            events: {
+              load: function () {
+                var that = this;
+                setInterval(function () {
+                  var x = (new Date()).getTime();
+                  var i = 0;
+                  widget.bucket.forEach(function (b) {
+                    var series = that.series[i];
+                    var key = bucketToKey[b];
+                    series.addPoint([x, bucketValue[key]], false, true);
+                    i += 1;
+                  });
+                  chart.redraw();
+                }, 1000);
+              }
+            }
+          },
+          title: {
+            text: widget.title
+          },
+          xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150
+          },
+          yAxis: {
+            title: {
+              text: widget.y_axis_title
+            },
+            plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+            }]
+          },
+          tooltip: {
+            formatter: function () {
+              return '<b>' + this.series.name + '</b><br/>' + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' + Highcharts.numberFormat(this.y, 2);
+            }
+          },
+          legend: {
+            enabled: true
+          },
+          exporting: {
+            enabled: false
+          },
+          series: (function () {
+            return widget.bucket.map(function (b) {
+              var res = {name: b, data: []};
+              var time = (new Date()).getTime();
+              for (var i = -19; i <= 0; i++) {
+                res.data.push({
+                  x: time + i * 1000,
+                  y: 0
+                });
+              }
+              return res;
+            });
+          })()
+        });
+      });
