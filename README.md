@@ -1,5 +1,8 @@
 # Ranaly
 Ranaly是一个基于Redis的数据统计可视化工具。目前还在开发中，会于2013年2月底完成。
+
+Ranaly的Node.js客户端库[node_ranaly](https://github.com/luin/node_ranaly)已经完成。
+
 ![效果图](./assets/preview_thumbnail.png)
 
 特点如下：
@@ -50,5 +53,5 @@ node_ranaly库会将名为“Users”的Amount类型的桶的值增1并和当前
 
 	node ranaly /path/to/config_file
 
-其中`/path/to/config_file`表示配置文件路径。此时就可以访问http://127.0.0.1:3000进入数据查看页面了，使用admin和admin123登录系统，能看到用户数量的折线图。
+其中`/path/to/config_file`表示配置文件路径。此时就可以访问 http://127.0.0.1:3000 进入数据查看页面了，使用admin和admin123登录系统，能看到用户数量的折线图。
 	
