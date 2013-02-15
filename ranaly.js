@@ -38,7 +38,7 @@ app.configure('development', function(){
 
 function noPageError(req, res) {
   res.locals.title = 'Error - ' + app.locals.settings.title;
-  req.session.error = 'No pages found.';
+  req.session.error = 'No pages found. Please refer to the <a href="https://github.com/luin/ranaly/">ranaly\'s documentation</a>.';
   middleware.flash(req, res, function () {});
   res.render('error');
 }

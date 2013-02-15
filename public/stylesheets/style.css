@@ -33,6 +33,11 @@ body {
   margin: 0 -170px 0 -200px;
 }
 
+.error {
+  width: 960px;
+  margin: 100px auto 0;
+}
+
 .login {
   position: absolute;
   top: 50%;
