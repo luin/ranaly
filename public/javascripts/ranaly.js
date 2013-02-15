@@ -24,7 +24,7 @@ var renderInterval = function (interval, callback) {
   setTimeout(function () {
     callback();
     renderInterval(interval, callback);
-  }, interval ? interval : getRandomInt(20000, 40000));
+  }, interval ? interval * 1000 : getRandomInt(20000, 40000));
 };
 
 var startOfDay = function (time) {

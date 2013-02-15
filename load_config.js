@@ -63,13 +63,12 @@ function initWidgets(wi) {
         widget.title = toString(widget.title) || 'Pie Chart';
         widget.default_range = toString(widget.default_range) || 'today';
         break;
-      case 'amount_bar_chart':
-        widget.title = toString(widget.title) || 'Bar Chart';
-        widget.default_range = toString(widget.default_range) || 'today';
-        break;
       case 'amount_total_count':
         widget.title = toString(widget.title) || 'Total Count';
         widget.default_range = toString(widget.default_range) || 'all';
+        break;
+      case 'amount_today_count':
+        widget.title = toString(widget.title) || 'Today Count';
         break;
       case 'realtime_line_chart':
         widget.title = toString(widget.title) || 'Realtime Chart';
