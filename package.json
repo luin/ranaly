@@ -1,9 +1,8 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
-  "private": true,
+  "name": "Ranaly",
+  "version": "0.1.0",
   "scripts": {
-    "start": "node app"
+    "start": "node ranaly"
   },
   "dependencies": {
     "express": "3.0.0rc2",
