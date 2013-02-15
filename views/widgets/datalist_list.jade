@@ -5,7 +5,10 @@ mixin datalist_list(widget)
       .content
       .pagination(style="margin-bottom: -10px; float: right")
     script
+      var widget = !{JSON.stringify(widget)};
+      var currentPage#{widget.id} = 1;
       var datalist_list_load_data#{widget.id} = function (page) {
+        currentPage#{widget.id} = page;
         var widget = !{JSON.stringify(widget)};
         var tpl = ' \
           <ul> \
@@ -33,5 +36,8 @@ mixin datalist_list(widget)
 
       }
       $(function () {
-        datalist_list_load_data#{widget.id}(1);
+        datalist_list_load_data#{widget.id}(currentPage#{widget.id});
+        renderInterval(widget.update_interval, function () {
+          datalist_list_load_data#{widget.id}(currentPage#{widget.id});
+        });
       });
