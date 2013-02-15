@@ -95,7 +95,6 @@ function initWidgets(wi) {
         }
         break;
       }
-
       widgets.push(widget);
 
     });
