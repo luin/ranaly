@@ -172,6 +172,13 @@ realtime_count支持同时显示多个bucket的数据。
 
 ![doc_datalist_list](./assets/doc_datalist_list.png)
 
+#### (8) custom_code
+该widget类型比较特殊，无需bucket参数，只需要content参数。作用是执行自定义的代码，包括HTML/CSS/JavaScript。如：
+
+      - type: custom_code
+        content: >
+          <p>hi</p>
+
 ## 综合实例
 现在假设要统计Facebook网站的数据，以使用Ranaly的Node.js客户端为例。首先我们通过node_ranaly建立到Redis的连接（假设Redis运行在本机6380端口上）：
 
