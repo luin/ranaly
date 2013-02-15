@@ -1,8 +1,9 @@
-require('js-yaml');
+var yaml = require('js-yaml');
 var fs = require('fs');
 
 if (process.argv[2] && fs.existsSync(process.argv[2])) {
-  var config = require(process.argv[2]);
+  var configContent = fs.readFileSync(process.argv[2], 'utf8');
+  var config = yaml.load(configContent);
 } else {
   console.log('[WARNING] No config file specified, using the default config. In order to specify a config file use: node /path/to/ranaly /path/to/config.yaml');
   var config = require('./config_default.yaml');
