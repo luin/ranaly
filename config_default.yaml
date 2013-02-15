@@ -1,60 +1,12 @@
-app_name: Facebook
+app_name: My App
 port: 3000
 redis:
   host: 127.0.0.1
   port: 6379
   key_prefix: 'Ranaly:'
 users:
-  - username: luin
-    password: 111111
-    role: 30
+  - username: admin
+    password: admin123
+    role: 0
 pages:
-  - title: Overview
-    widgets:
-      - type: amount_line_chart
-        bucket: [Users, Page views, Groups]
-      - type: amount_today_count
-        bucket: [Users, Page views, Groups]
-      - type: realtime_line_chart
-        bucket: [Memory, CPU, SSD]
-      - type: realtime_count
-        bucket: [Memory, CPU, SSD]
-      - type: datalist_list
-        title: User list
-        bucket: [Users]
-        template: >
-          <table class="table table-hover table-bordered">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>name</th>
-                <th>age</th>
-                <th>description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#data}}
-              <tr>
-                <td>{{id}}</td>
-                <td>{{name}}</td>
-                <td>{{age}}</td>
-                <td>{{description}}</td>
-              </tr>
-              {{/data}}
-            </tbody>
-          </table>
-        preset_template: table
-      - type: amount_pie_chart
-        bucket: [PHP, Node.js, Python, Ruby]
-      - type: amount_total_count
-        bucket: [Node.js, Python, Ruby]
-      - type: datalist_list
-        bucket: [Images]
-        preset_template: images
-      - type: custom_code
-        content: hi
-        encoding: utf8
-  - title: System
-    widgets:
-      - type: amount_line_chart
-        bucket: [Users, Page views, Groups]
+  # Add your pages here.
