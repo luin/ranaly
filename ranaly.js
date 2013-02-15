@@ -37,7 +37,9 @@ app.configure('development', function(){
 });
 
 function noPageError(req, res) {
-  req.session.error = 'No page.';
+  res.locals.title = 'Error - ' + app.locals.settings.title;
+  req.session.error = 'No pages found.';
+  middleware.flash(req, res, function () {});
   res.render('error');
 }
 
