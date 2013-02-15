@@ -6,7 +6,10 @@
   },
   "dependencies": {
     "express": "3.0.0rc2",
+    "connect": "*",
     "jade": "*",
-    "ranaly": "*"
+    "js-yaml": "2.0.2",
+    "ranaly": "*",
+    "session.socket.io": "0.1.4"
   }
 }
