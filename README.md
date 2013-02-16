@@ -1,5 +1,5 @@
 # Ranaly
-Ranaly是一个基于Redis的数据统计可视化工具。目前还在开发中，会于2013年2月底完成。
+Ranaly是一个基于Redis的数据统计可视化工具。
 
 Ranaly的Node.js客户端库[node_ranaly](https://github.com/luin/node_ranaly)已经完成。
 
