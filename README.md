@@ -3,7 +3,7 @@ Ranaly是一个基于Redis的数据统计可视化工具。
 
 Ranaly的Node.js客户端库[node_ranaly](https://github.com/luin/node_ranaly)已经完成。
 
-![效果图](./assets/preview_thumbnail.png)
+![效果图](./assets/preview.png)
 
 特点如下：
 
