@@ -3,15 +3,15 @@
 var ranalyApi = {
   amount : {
     get: function (buckets, dates, callback) {
-      $.post('/api/amount_get/' + buckets.join(','), {time: dates}, callback);
+      $.post('/api/amount_get/' + encodeURI(buckets.join(',')), {time: dates}, callback);
     },
     sum: function (buckets, dates, callback) {
-      $.post('/api/amount_sum/' + buckets.join(','), {time: dates}, callback);
+      $.post('/api/amount_sum/' + encodeURI(buckets.join(',')), {time: dates}, callback);
     }
   },
   datalist : {
     get: function (bucket, from, to, callback) {
-      $.get('/api/datalist_get/' + bucket, {from: from, to: to}, callback);
+      $.get('/api/datalist_get/' + encodeURI(bucket), {from: from, to: to}, callback);
     }
   }
 };
