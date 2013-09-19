@@ -6,7 +6,7 @@ var config = require('./load_config');
 var ranaly = require('ranaly').createClient(config.redis.port,
     config.redis.host, config.redis.key_prefix);
 
-var sub = require('redis').createClient();
+var sub = require('redis').createClient(config.redis.port, config.redis.host);
 
 var app = express();
 
@@ -91,10 +91,11 @@ app.post('/login', function (req, res) {
     res.redirect(req.query.next || '/');
   } else {
     req.session.error = 'Wrong username or password.';
-    if (req.query.next)
+    if (req.query.next) {
       res.redirect('/login?next=' + (req.query.next));
-    else
+    } else {
       res.redirect('/login');
+    }
   }
 });
 
