@@ -329,3 +329,7 @@ realtime_count支持同时显示多个bucket的数据。
 			          </table>
 
 就可以看到记录最新注册用户资料的表格了。
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/luin/ranaly/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
