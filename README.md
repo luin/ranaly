@@ -30,7 +30,7 @@ Ranaly使用Node.js开发，所以需要先安装[Node.js](http://nodejs.org/)�
 
 如果希望统计项目注册用户的变化趋势，可以在用户注册成功后加上如下代码：
 
-	var ranaly = require('ranaly').createClient();
+	var ranaly = equire('node_ranaly').createClient();
 	var rUsers = new ranaly.Amount('Users');
 	rUsers.incr();
 
@@ -182,7 +182,7 @@ realtime_count支持同时显示多个bucket的数据。
 ## 综合实例
 现在假设要统计Facebook网站的数据，以使用Ranaly的Node.js客户端为例。首先我们通过node_ranaly建立到Redis的连接（假设Redis运行在本机6380端口上）：
 
-	var ranaly = require('ranaly');
+	var ranaly = require('node_ranaly');
 	var ranalyClient = ranaly.createClient(6380, '127.0.0.1');
 
 首先要统计的是用户的数量，每当用户注册成功都调用如下代码令Users桶的数值加1：

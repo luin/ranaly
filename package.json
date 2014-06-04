@@ -11,7 +11,7 @@
     "js-yaml": "2.0.2",
     "ranaly": "*",
     "redis": "*",
-    "socket.io": "*",
+    "socket.io": "0.9.*",
     "session.socket.io": "0.1.4"
   }
 }
