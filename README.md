@@ -26,7 +26,7 @@ Ranaly使用Node.js开发，所以需要先安装[Node.js](http://nodejs.org/)�
 ### 3. 在已有项目中加入统计代码
 如果你的项目使用Node.js开发，可以使用Ranaly的node客户端库，安装方法如下：
 
-	npm install ranaly
+	npm install node_ranaly
 
 如果希望统计项目注册用户的变化趋势，可以在用户注册成功后加上如下代码：
 
