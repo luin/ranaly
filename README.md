@@ -30,7 +30,7 @@ Ranaly使用Node.js开发，所以需要先安装[Node.js](http://nodejs.org/)�
 
 如果希望统计项目注册用户的变化趋势，可以在用户注册成功后加上如下代码：
 
-	var ranaly = equire('node_ranaly').createClient();
+	var ranaly = require('node_ranaly').createClient();
 	var rUsers = new ranaly.Amount('Users');
 	rUsers.incr();
 
